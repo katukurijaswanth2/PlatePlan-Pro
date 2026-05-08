@@ -37,9 +37,7 @@ export const Categories = () => {
                     />
                     <h3
                         className="name"
-                        onClick={() => navigate(`/category/${category.strCategory}`, {
-                            state: { category }
-                        })}
+                       onClick={() => navigate(`/categories/${category.strCategory}`)}
                     >
                         {category.strCategory}
                     </h3>
