@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { Card } from "../utils/Card"
 import "./Categories.css"
 
 export const Categories = () => {
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -27,22 +26,19 @@ export const Categories = () => {
     if (error) return <p>{error}</p>
 
     return (
+        <div className="parent-grid">
         <div className="grid">
             {categories.map((category) => (
-                <div key={category.idCategory} className="card">
-                    <img
-                        src={category.strCategoryThumb}
-                        alt={category.strCategory}
-                        className="image"
-                    />
-                    <h3
-                        className="name"
-                       onClick={() => navigate(`/categories/${category.strCategory}`)}
-                    >
-                        {category.strCategory}
-                    </h3>
-                </div>
+                <Card
+                    key={category.idCategory}
+                    image={category.strCategoryThumb}
+                    name={category.strCategory}
+                    link={`/categories/${category.strCategory}`}
+                    description={category.strCategoryDescription?.slice(0, 30) + "..."}
+                  
+                />
             ))}
+        </div>
         </div>
     )
 }

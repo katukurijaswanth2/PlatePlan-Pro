@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
+import { Card } from "../utils/Card"
 import "./SpecificCategory.css"
 
 export const SpecificCategory = () => {
@@ -12,7 +13,6 @@ export const SpecificCategory = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    // Fetch category image and description
     useEffect(() => {
         axios.get("https://www.themealdb.com/api/json/v1/1/categories.php")
             .then((response) => {
@@ -21,23 +21,14 @@ export const SpecificCategory = () => {
                 )
                 setCategory(found)
             })
-            .catch((err) => {
-                setError("Failed to fetch category")
-            })
+            .catch(() => setError("Failed to fetch category"))
     }, [name])
 
-    // Fetch all meals in this category
     useEffect(() => {
         axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`)
-            .then((response) => {
-                setMeals(response.data.meals || [])
-            })
-            .catch((err) => {
-                setError("Failed to fetch meals")
-            })
-            .finally(() => {
-                setLoading(false)
-            })
+            .then((response) => setMeals(response.data.meals || []))
+            .catch(() => setError("Failed to fetch meals"))
+            .finally(() => setLoading(false))
     }, [name])
 
     if (loading) return <p className="loading">Loading...</p>
@@ -66,21 +57,17 @@ export const SpecificCategory = () => {
 
             <h2 className="mealsHeading">Meals in {name}</h2>
 
-            <div className="mealsGrid">
-                {meals.map((meal) => (
-                    <div
-                        key={meal.idMeal}
-                        className="mealCard"
-                        onClick={() => navigate(`/categories/${name}/meals/${meal.idMeal}`)}
-                    >
-                        <img
-                            src={meal.strMealThumb}
-                            alt={meal.strMeal}
-                            className="mealImage"
+            <div className="parent-grid">
+                <div className="grid">
+                    {meals.map((meal) => (
+                        <Card
+                            key={meal.idMeal}
+                            image={meal.strMealThumb}
+                            name={meal.strMeal?.slice(0,5)+"..."}
+                            link={`/categories/${name}/meals/${meal.idMeal}`}
                         />
-                        <p className="mealName">{meal.strMeal}</p>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
 
         </div>
