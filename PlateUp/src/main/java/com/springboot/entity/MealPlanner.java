@@ -12,9 +12,14 @@ public class MealPlanner {
     private Long id;
 
     @Column(name = "item_name", nullable = false)
+//    in the last project i use the same column name and the key name. but here i want to use the different names so i use this method
     @JsonProperty("name")
     private String itemName;
-
+//By default, when you declare a String field in JPA, Hibernate maps it to VARCHAR(255) in the database —
+// meaning it can only hold up to 255 characters.
+//    But a YouTube link or Image URL can sometimes be longer than 255 characters,
+//    so you use columnDefinition = "TEXT" to override that:
+// Now it can hold very long strings (65,535 characters)
     @Column(name = "youtube_link", columnDefinition = "TEXT")
     @JsonProperty("youtube")
     private String youtubeLink;
