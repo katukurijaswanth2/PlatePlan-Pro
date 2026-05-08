@@ -27,21 +27,26 @@ export const SpecificItem = () => {
         fetchMeal()
     }, [mealId])
 
-    const handleAddToPlanner = async () => {
-        setSaving(true)
-        try {
-            await axios.post("http://localhost:8080/api/meals", {
-                name: meal.strMeal,
-                image: meal.strMealThumb,
-                youtube: meal.strYoutube
-            })
-            setSaved(true)
-        } catch (err) {
+ const handleAddToPlanner = async () => {
+    setSaving(true)
+    try {
+        await axios.post("http://localhost:8080/api/meals", {
+            name: meal.strMeal,
+            image: meal.strMealThumb,
+            youtube: meal.strYoutube
+        })
+        setSaved(true)
+        setTimeout(() => navigate("/planner"), 1000)
+    } catch (err) {
+        if (err.response && err.response.status === 409) {
+            alert("This meal is already in your planner!")
+        } else {
             console.error("Failed to save meal", err)
-        } finally {
-            setSaving(false)
         }
+    } finally {
+        setSaving(false)
     }
+}
 
     if (loading) return (
         <div className="loadingScreen">
@@ -84,7 +89,7 @@ export const SpecificItem = () => {
                                     rel="noreferrer"
                                     className="youtubeButton"
                                 >
-                                     View on YouTube
+                                    View on YouTube
                                 </a>
                             )}
                             <button
@@ -92,7 +97,7 @@ export const SpecificItem = () => {
                                 onClick={handleAddToPlanner}
                                 disabled={saved || saving}
                             >
-                                {saving ? "Saving..." : saved ? " Added to Planner" : "+ Add to Meal Planner"}
+                                {saving ? "Saving..." : saved ? "✓ Added to Planner" : "+ Add to Meal Planner"}
                             </button>
                         </div>
                     </div>
@@ -104,7 +109,7 @@ export const SpecificItem = () => {
 
                 {/* Ingredients */}
                 <div className="section">
-                    <h2 className="sectionTitle"> Ingredients</h2>
+                    <h2 className="sectionTitle">Ingredients</h2>
                     <div className="ingredientsGrid">
                         {ingredients.map((item, index) => (
                             <div key={index} className="ingredientCard">
@@ -122,7 +127,7 @@ export const SpecificItem = () => {
 
                 {/* Instructions */}
                 <div className="section">
-                    <h2 className="sectionTitle"> Instructions</h2>
+                    <h2 className="sectionTitle">Instructions</h2>
                     <div className="instructionsBox">
                         {meal.strInstructions.split("\n").filter(line => line.trim()).map((step, index) => (
                             <p key={index} className="instructionStep">{step}</p>
@@ -134,7 +139,7 @@ export const SpecificItem = () => {
                 {meal.strSource && (
                     <div className="section">
                         <a href={meal.strSource} target="_blank" rel="noreferrer" className="sourceLink">
-                         View Full Source Recipe
+                            View Full Source Recipe
                         </a>
                     </div>
                 )}

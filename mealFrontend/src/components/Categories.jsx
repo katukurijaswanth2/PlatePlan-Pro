@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { Card } from "../utils/Card"
 import "./Categories.css"
+import { MealPlanner } from "../services/MealPlanner"
 
 export const Categories = () => {
     const [categories, setCategories] = useState([])
@@ -25,7 +26,7 @@ export const Categories = () => {
     if (loading) return <p>Loading...</p>
     if (error) return <p>{error}</p>
 
-    return (
+    return (<>
         <div className="parent-grid">
         <div className="grid">
             {categories.map((category) => (
@@ -40,5 +41,7 @@ export const Categories = () => {
             ))}
         </div>
         </div>
+      
+        </>
     )
 }

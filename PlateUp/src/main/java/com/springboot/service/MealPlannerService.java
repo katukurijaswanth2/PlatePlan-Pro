@@ -27,4 +27,8 @@ public class MealPlannerService {
         }
         mealPlannerRepository.deleteById(id);
     }
+
+    public boolean existsByName(String name) {
+        return mealPlannerRepository.existsByItemName(name);
+    }
 }
