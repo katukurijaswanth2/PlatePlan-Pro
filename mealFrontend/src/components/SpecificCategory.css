@@ -1,0 +1,113 @@
+.specificContainer {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.backButton {
+    background-color: #f0a500;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: background-color 0.2s;
+}
+
+.backButton:hover {
+    background-color: #d4920a;
+}
+
+/* Category Detail */
+.categoryDetail {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.categoryImage {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.categoryInfo {
+    flex: 1;
+}
+
+.categoryTitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+.categoryDescription {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* Meals Section */
+.mealsHeading {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.mealsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.mealCard {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 12px;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.mealCard:hover {
+    transform: scale(1.05);
+}
+
+.mealImage {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.mealName {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: #888;
+}
+
+.error {
+    text-align: center;
+    color: red;
+    padding: 20px;
+}
