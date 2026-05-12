@@ -27,12 +27,16 @@ public class MealPlanner {
     @Column(name = "image_url", columnDefinition = "TEXT")
     @JsonProperty("image")
     private String imageUrl;
-
+    //  THIS — links each meal to the user who saved it
+    @Column(name = "user_id", nullable = false)
+    @JsonProperty("userId")
+    private Long userId;
     // ─── Constructors ───────────────────────────────────────────────
 
     public MealPlanner() {}
 
-    public MealPlanner(String itemName, String youtubeLink, String imageUrl) {
+    public MealPlanner(Long userId, String itemName, String youtubeLink, String imageUrl) {
+        this.userId = userId;       // ADD this line
         this.itemName = itemName;
         this.youtubeLink = youtubeLink;
         this.imageUrl = imageUrl;
@@ -42,6 +46,8 @@ public class MealPlanner {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public String getItemName() { return itemName; }
     public void setItemName(String itemName) { this.itemName = itemName; }

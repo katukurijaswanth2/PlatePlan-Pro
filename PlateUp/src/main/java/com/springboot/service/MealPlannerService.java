@@ -12,11 +12,14 @@ public class MealPlannerService {
 
     @Autowired
     private MealPlannerRepository mealPlannerRepository;
-
-    public List<MealPlanner> getAllMeals() {
-        return mealPlannerRepository.findAll();
-    }
-
+//returns all the records in the database which we dont want.
+//    public List<MealPlanner> getAllMeals() {
+//        return mealPlannerRepository.findAll();
+//    }
+//   only return meals for the requesting user:
+public List<MealPlanner> getMealsByUser(Long userId) {
+    return mealPlannerRepository.findByUserId(userId);
+}
     public MealPlanner saveMeal(MealPlanner meal) {
         return mealPlannerRepository.save(meal);
     }
