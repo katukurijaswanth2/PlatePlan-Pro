@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Signup.css";
+import { useNavigate } from "react-router-dom";
 
-// Base URL of your Spring Boot backend
 const BASE_URL = "http://localhost:8080/api/auth";
 
 export const Signup = () => {
@@ -16,8 +16,12 @@ export const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [highlightLogin, setHighlightLogin] = useState(false);
 
-  // ─── POST /api/auth/signup ───────────────────────────────────────
+  const navigate = useNavigate();
+const goToLogin = () => {
+    navigate("/login");
+  };
   const handleSubmit = async () => {
     setError("");
     setSuccess("");
@@ -39,33 +43,48 @@ export const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/signup`, {
+      // Step 1: Signup — creates the user in the database
+      await axios.post(`${BASE_URL}/signup`, {
         firstName,
         lastName,
         email,
         password,
       });
 
-      // Store "yes" in localStorage so other pages know user is signed in
-      localStorage.setItem("user", "yes");
+      // Step 2: Login immediately after signup — so we get the userId back
+      // Spring Boot login returns the full User object including id
+      const loginResponse = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
+      });
 
-      // response.data from Spring Boot is a plain String — safe to display
-      // Make sure it's a string, not an object
-      setSuccess(typeof response.data === "string" ? response.data : "Registered successfully!");
+      // Step 3: Save userId and user details in localStorage
+      // "user" = "yes" is the auth-guard signal used across the app
+      localStorage.setItem("user", "yes");
+      localStorage.setItem("userId", loginResponse.data.id);
+      localStorage.setItem("firstName", loginResponse.data.firstName);
+      localStorage.setItem("email", loginResponse.data.email);
+
+      setSuccess("Sign in was successful, account is created!");
+
+      // Step 4: Redirect to home page
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
 
     } catch (err) {
-      // Spring Boot 500 errors return an object like { timestamp, status, error, path }
-      // We need to extract just the message string — never pass the whole object to setError()
+      const status = err.response?.status;
       const errData = err.response?.data;
 
-      if (typeof errData === "string") {
-        // Our custom error message from UserService e.g. "Email already exists"
+      if (status === 409) {
+        // Duplicate email — backend returns 409 CONFLICT
+        setError("This email is already in use, please use a different email.");
+         setHighlightLogin(true);
+      } else if (typeof errData === "string") {
         setError(errData);
       } else if (errData?.message) {
-        // Spring Boot error object sometimes has a message field
         setError(errData.message);
       } else {
-        // Fallback generic message
         setError("Something went wrong. Please try again.");
       }
     } finally {
@@ -192,7 +211,12 @@ export const Signup = () => {
         </button>
 
         <p className="signin">
-          Already have an account? <a href="/signin">Signin</a>
+          Already have an account?<button
+  onClick={goToLogin}
+  className={`navigation_login ${highlightLogin ? "glow-button" : ""}`}
+>
+  Login
+</button>
         </p>
       </div>
     </div>

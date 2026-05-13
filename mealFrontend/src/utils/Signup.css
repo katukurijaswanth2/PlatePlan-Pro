@@ -178,3 +178,18 @@
     opacity: 0;
   }
 }
+
+.glow-button {
+  animation: glow 1s infinite alternate;
+  box-shadow: 0 0 10px #00bfff;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #00bfff;
+  }
+
+  to {
+    box-shadow: 0 0 20px #00bfff;
+  }
+}

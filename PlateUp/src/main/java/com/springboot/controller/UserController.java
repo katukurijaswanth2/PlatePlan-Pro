@@ -49,7 +49,7 @@ public class UserController {
     public User getUserById(@PathVariable Long id) {
         return userService.findById(id);
     }
-    // GET /api/auth/user?email=john@gmail.com  → fetch a user by email
+    // GET /api/auth/user?email=jaswanthkatukuri2@gmail.com  → fetch a user by email
     @GetMapping("/user")
     public User getUserByEmail(@RequestParam String email) {
         return userService.findByEmail(email);
